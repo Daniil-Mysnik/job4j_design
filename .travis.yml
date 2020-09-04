@@ -12,8 +12,4 @@ notifications:
     recipients:
       -mysnik_999@mail.ru
     on_success: never # default: change
-    on_failure: always # defa,ult: always
-
-env:
-  global:
-    - CODECOV_TOKEN="b1202de4-3d5d-4c9d-aaec-b4a818a17fa2"
+    on_failure: always # default: always
