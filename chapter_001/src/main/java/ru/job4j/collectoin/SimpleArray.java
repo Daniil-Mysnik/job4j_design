@@ -1,38 +1,55 @@
 package ru.job4j.collectoin;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class SimpleArray<T> implements Iterable<T> {
     private int capacity = 10;
-    private int size = 0;
-    private int changes = 0;
-    private double loadFactor = 0.75;
-    private T[] array = (T[])new Object[capacity];
-    private int index = 0;
+    private int modeCount = 0;
+    private Object[] container;
+    private int position = 0;
+
+    public SimpleArray() {
+        this.container = new Object[capacity];
+    }
 
     public T get(int index) {
-        Objects.checkIndex(index, capacity);
-        List list = new ArrayList();
-        return array[index];
+        if (Objects.checkIndex(index, position) != index) {
+            throw new IndexOutOfBoundsException();
+        }
+        return (T) container[index];
     }
 
     public void add(T model) {
-        if (size == (int) (capacity * loadFactor)) {
+        if (position >= capacity) {
             capacity *= 2;
-            T[] tmp = (T[])new Object[capacity];
-            System.arraycopy(array, 0, tmp, 0, size - 1);
-            array = tmp;
+            container = Arrays.copyOf(container, capacity);
         }
-        array[index++] = model;
-        size++;
+        container[position++] = model;
+        modeCount++;
     }
 
 
     @Override
     public Iterator<T> iterator() {
-        return new SimpleArrayIterator<T>(changes, array);
+        return new Iterator<T>() {
+            private int expectedModeCount = modeCount;
+            private int index = 0;
+
+            @Override
+            public boolean hasNext() {
+                return position > index;
+            }
+
+            @Override
+            public T next() {
+                if (!hasNext()) {
+                    throw new NoSuchElementException();
+                }
+                if (expectedModeCount != modeCount) {
+                    throw new ConcurrentModificationException();
+                }
+                return (T) container[index++];
+            }
+        };
     }
 }
