@@ -28,6 +28,32 @@ public class SimpleArray<T> implements Iterable<T> {
         modeCount++;
     }
 
+    public boolean contains(T element) {
+        for (int i = 0; i < position; i++) {
+            if (container[i].equals(element)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SimpleArray<?> that = (SimpleArray<?>) o;
+        return capacity == that.capacity &&
+                modeCount == that.modeCount &&
+                position == that.position &&
+                Arrays.equals(container, that.container);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(capacity, modeCount, position);
+        result = 31 * result + Arrays.hashCode(container);
+        return result;
+    }
 
     @Override
     public Iterator<T> iterator() {
