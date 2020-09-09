@@ -1,18 +1,23 @@
 package ru.job4j.collectoin;
 
-import java.util.ConcurrentModificationException;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 public class SimpleHashMap<K, V> implements Iterable<V> {
     private int capacity = 16;
     private Object[] container;
     private int modCount = 0;
-    private float loadFactor = 0.75F;
+    private final float DEFAULT_LOAD_FACTOR = 0.75F;
+    private float loadFactor;
     private int size = 0;
 
     public SimpleHashMap() {
         this.container = new Object[capacity];
+        this.loadFactor = DEFAULT_LOAD_FACTOR;
+    }
+
+    public SimpleHashMap(float loadFactor) {
+        this.container = new Object[capacity];
+        this.loadFactor = loadFactor;
     }
 
     public boolean insert(K key, V value) {
@@ -20,7 +25,7 @@ public class SimpleHashMap<K, V> implements Iterable<V> {
         int bucket = indexOf(hashCode);
         Node<K, V> checkNode = ((Node<K, V>) container[bucket]);
         if (checkNode != null) {
-            if (checkNode.hashCode == hashCode && checkNode.key.equals(key)) {
+            if (checkNode.hashCode == hashCode && ((checkNode.key) == key || (key != null && key.equals(checkNode.key)))) {
                 checkNode.value = value;
                 modCount++;
             }
