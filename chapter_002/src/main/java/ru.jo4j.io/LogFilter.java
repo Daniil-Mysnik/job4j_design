@@ -1,7 +1,6 @@
 package ru.jo4j.io;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -21,8 +20,19 @@ public class LogFilter {
         return list;
     }
 
+    public static void save(List<String> log, String fileName) {
+        try (PrintWriter out = new PrintWriter(
+                new BufferedOutputStream(
+                        new FileOutputStream(fileName)
+                ))) {
+            log.forEach(s -> out.write(s + System.lineSeparator()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) {
         List<String> log = filter("log.txt");
-        System.out.println(log);
+        save(log, "404.txt");
     }
 }
