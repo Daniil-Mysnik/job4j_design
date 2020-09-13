@@ -44,7 +44,7 @@ public class AnalizyTest {
                     "200 11:02:02\n" +
                     "500 11:03:01\n" +
                     "400 11:04:01\n" +
-                    "300 11:05:01\n");
+                    "300 11:05:01");
         }
         new Analizy().unavailable(source.getAbsolutePath(), target.getAbsolutePath());
         List<String> expected = Arrays.asList("10:57:01 - 10:59:01", "11:01:02 - 11:02:02", "11:03:01 - 11:05:01");
