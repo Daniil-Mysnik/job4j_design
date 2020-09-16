@@ -41,11 +41,10 @@ public class Zip {
 //                    new File(argZip.output())
 //            );
 //        }
-        if (argZip.valid()) {
-            new Zip().packFiles(
-                    Search.search(Paths.get(argZip.directory()), argZip.exclude()).stream().map(Path::toFile).collect(Collectors.toList()),
-                    new File(argZip.output())
-            );
-        }
+        new Zip().packFiles(
+                Search.searchAndExclude(Paths.get(argZip.directory()), argZip.exclude()).stream().map(Path::toFile).collect(Collectors.toList()),
+                new File(argZip.output())
+        );
+
     }
 }

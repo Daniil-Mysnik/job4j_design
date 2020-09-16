@@ -5,46 +5,52 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 public class ArgZip {
-    private HashMap<String, String> parameters = new HashMap<>();
+    private String directory;
+    private String exclude;
+    private String output;
 
     public ArgZip(String[] args) {
+        valid(args);
+    }
+
+    private boolean valid(String[] args) {
         if (args.length < 2) {
             throw new IllegalArgumentException("There must be at least 2 parameters: -d (directory), -o (output)");
         }
-        Arrays.stream(args).forEach(s -> {
-                    String[] strings = s.split("=");
-                    parameters.put(strings[0], strings[1]);
-                }
-        );
-
-    }
-
-    public boolean valid() {
-        boolean valid = true;
-        if (!parameters.containsKey("-d")) {
-            System.out.println("Parameter -d (directory) not exist!");
-            valid = false;
-        } else if (!new File(parameters.get("-d")).exists()) {
-            System.out.println("Directory " + parameters.get("-d") + " not exist");
-            valid = false;
+        for (String str : args) {
+            String[] strings = str.split("=");
+            switch (strings[0]) {
+                case "-d":
+                    if (!new File(strings[1]).exists()) {
+                        System.out.println("Directory " + strings[1] + " not exist");
+                        return false;
+                    } else {
+                        this.directory = strings[1];
+                        break;
+                    }
+                case "-o":
+                    this.output = strings[1];
+                    break;
+                case "-e":
+                    this.exclude = strings[1];
+                    break;
+                default:
+                    throw new IllegalArgumentException(strings[0] + " - wrong parameter!!!");
+            }
         }
-        if (!parameters.containsKey("-o")) {
-            System.out.println("Parameter -o (output) not exist!");
-            valid = false;
-        }
-        return valid;
+        return true;
     }
 
     public String directory() {
-        return parameters.get("-d");
+        return this.directory;
     }
 
     public String exclude() {
-        return parameters.get("-e") != null ? parameters.get("-e") : "null";
+        return this.exclude;
     }
 
     public String output() {
-        return parameters.get("-o");
+        return this.output;
     }
 
 }
