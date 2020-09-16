@@ -1,0 +1,20 @@
+User: Дарова
+Bot: Answer4
+User: Как делишки?
+Bot: Answer1
+User: Так, хорошо
+Bot: Answer9
+User: стоп
+User: Ага
+User: Раз
+User: Два
+User: Три
+User: ПРОДОЛЖИТЬ
+Bot: Answer8
+User: Тааак
+Bot: Answer5
+User: Работаем
+Bot: Answer9
+User: А теперь
+Bot: Answer1
+User: Закончить
