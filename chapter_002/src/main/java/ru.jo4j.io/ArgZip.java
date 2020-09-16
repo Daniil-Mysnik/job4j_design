@@ -5,16 +5,18 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 public class ArgZip {
-    private final String[] args;
     private HashMap<String, String> parameters = new HashMap<>();
 
     public ArgZip(String[] args) {
-        this.args = args;
+        if (args.length < 2) {
+            throw new IllegalArgumentException("There must be at least 2 parameters: -d (directory), -o (output)");
+        }
         Arrays.stream(args).forEach(s -> {
                     String[] strings = s.split("=");
                     parameters.put(strings[0], strings[1]);
                 }
         );
+
     }
 
     public boolean valid() {
