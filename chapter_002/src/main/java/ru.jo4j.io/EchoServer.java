@@ -10,7 +10,8 @@ import java.net.Socket;
 public class EchoServer {
     public static void main(String[] args) throws IOException {
         try (ServerSocket server = new ServerSocket(9000)) {
-            while (true) {
+            boolean stopped = false;
+            while (!stopped) {
                 Socket socket = server.accept();
                 try (OutputStream out = socket.getOutputStream();
                      BufferedReader in = new BufferedReader(
@@ -23,11 +24,16 @@ public class EchoServer {
                             echo = str.substring(10, str.length() - 9);
                         }
                     }
-                    if (echo.equalsIgnoreCase("Bye")) {
-                        out.write(("Server stopped" + System.lineSeparator()).getBytes());
-                        break;
-                    } else {
-                        out.write((echo + System.lineSeparator()).getBytes());
+                    switch (echo) {
+                        case "Hello" :
+                            out.write(("Hello, dear friend" + System.lineSeparator()).getBytes());
+                            break;
+                        case "Exit" :
+                            out.write(("Server stopped" + System.lineSeparator()).getBytes());
+                            stopped = true;
+                            break;
+                        default:
+                            out.write((echo + System.lineSeparator()).getBytes());
                     }
                 }
             }
