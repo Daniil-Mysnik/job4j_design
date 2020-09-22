@@ -1,0 +1,6 @@
+C:\Users\DanTes\Desktop\job4j_design\.idea\libraries\Maven__log4j_log4j_1_2_17.xml
+C:\Users\DanTes\Desktop\job4j_design\.idea\libraries\Maven__org_slf4j_slf4j_log4j12_1_7_30.xml
+C:\Users\DanTes\Desktop\job4j_design\chapter_002\data\server.log
+C:\Users\DanTes\Desktop\job4j_design\chapter_002\src\main\resources\log4j.properties
+C:\Users\DanTes\Desktop\job4j_design\chapter_002\target\classes\log4j.properties
+C:\Users\DanTes\Desktop\job4j_design\log.txt

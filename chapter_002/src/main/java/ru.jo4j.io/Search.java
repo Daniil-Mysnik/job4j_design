@@ -25,4 +25,22 @@ public class Search {
         Files.walkFileTree(root, searcher);
         return searcher.getPaths();
     }
+
+    public static List<Path> searchByMask(Path root, String mask) throws IOException {
+        SearchFiles searcher = new SearchFiles(p -> p.toFile().getName().endsWith(mask));
+        Files.walkFileTree(root, searcher);
+        return searcher.getPaths();
+    }
+
+    public static List<Path> searchByFullName(Path root, String fileName) throws IOException {
+        SearchFiles searcher = new SearchFiles(p -> p.toFile().getName().equals(fileName));
+        Files.walkFileTree(root, searcher);
+        return searcher.getPaths();
+    }
+
+    public static List<Path> searchByRegExp(Path root, String regExp) throws IOException {
+        SearchFiles searcher = new SearchFiles(p -> p.toFile().getName().matches(regExp));
+        Files.walkFileTree(root, searcher);
+        return searcher.getPaths();
+    }
 }
