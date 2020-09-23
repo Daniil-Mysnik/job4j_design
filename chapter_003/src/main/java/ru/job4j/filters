@@ -1,0 +1,47 @@
+create database filters;
+
+create table type (
+    id serial primary key,
+    name varchar (255)
+);
+
+create table product (
+    id serial primary key,
+    name varchar (255),
+    expired_date date,
+    price int,
+    type_id int references type(id)
+);
+
+insert into type(name) values ('СЫР');
+insert into type(name) values ('МОЛОКО');
+
+insert into product(name, expired_date, price, type_id) values ('Мороженное стаканчик', '2021-01-01', 35, 2);
+insert into product(name, expired_date, price, type_id) values ('Мороженное рожок', '2021-01-05', 45, 2);
+insert into product(name, expired_date, price, type_id) values ('Вними 2.5', '2020-10-15', 50, 2);
+insert into product(name, expired_date, price, type_id) values ('Пармезан', '2020-10-05', 300, 1);
+insert into product(name, expired_date, price, type_id) values ('Российский', '2020-12-16', 200, 1);
+
+--1
+select * from product join type on product.type_id = type.id where type.name = 'СЫР';
+
+--2
+select * from product where name LIKE '%Мороженное%';
+
+--3
+select * from product where extract(month from current_date + interval '1 month') = extract(month from  expired_date);
+
+--4
+select * from product order by price desc limit 1;
+
+--5
+select type.name, count(type.name) from type join product on type.id = product.type_id group by type.name;
+
+--6
+select * from product join type on product.type_id = type.id where type.name = 'СЫР' or type.name = 'МОЛОКО';
+
+--7
+select type.name from type join product on type.id = product.type_id group by type.name having count(type.name) < 10;
+
+--8
+select product.name, type.name from product join type on product.type_id = type.id;
