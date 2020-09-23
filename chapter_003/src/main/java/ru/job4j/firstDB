@@ -1,0 +1,13 @@
+create table employee (
+    id serial primary key,
+    firstName varchar(255),
+    lastName varchar(255),
+    patronymic varchar(255)
+);
+
+insert into employee(firstName, lastName, patronymic) values ('Ivanov', 'Ivan', 'Ivanovich');
+select * from employee;
+update employee set firstName = 'Petrov';
+select * from employee;
+delete from employee;
+select * from employee;
