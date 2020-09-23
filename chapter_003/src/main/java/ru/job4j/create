@@ -1,0 +1,78 @@
+create database query_system;
+
+create table role (
+                      id serial primary key,
+                      role varchar (255)
+);
+
+create table rules (
+                       id serial primary key,
+                       rule varchar (255)
+);
+
+create table role_rule (
+                           role_id int references role(id),
+                           rule_id int references rules(id)
+);
+
+create table "user" (
+                      id serial primary key,
+                      firstName varchar(255),
+                      lastName varchar(255),
+                      patronymic varchar(255),
+                      role_id int references role(id)
+);
+
+create table category (
+                          id serial primary key,
+                          category varchar (255)
+);
+
+create table state (
+                       id serial primary key,
+                       state varchar (255)
+);
+
+create table item (
+                      id serial primary key,
+                      itemName varchar (255),
+                      user_id int references "user"(id),
+                      category_id int references category(id),
+                      state_id int references state(id)
+);
+
+create table comments (
+                          id serial primary key,
+                          comment varchar (255),
+                          item_id int references item(id)
+);
+
+create table attachs (
+                         id serial primary key,
+                         attach varchar (255),
+                         item_id int references item(id)
+);
+
+insert into role(role) values ('User');
+insert into role(role) values ('Admin');
+insert into role(role) values ('Manager');
+
+insert into rules(rule) values ('Nothing');
+insert into rules(rule) values ('Administer the site');
+insert into rules(rule) values ('Manage personnel');
+
+insert into role_rule(role_id, rule_id) values (1, 1);
+insert into role_rule(role_id, rule_id) values (2, 2);
+insert into role_rule(role_id, rule_id) values (3, 3);
+
+insert into "user"(firstName, lastName, patronymic, role_id) values ('Ivanov', 'Ivan', 'Ivanovich', 2);
+
+insert into category(category) values ('category1');
+
+insert into state(state) values ('state1');
+
+insert into item(itemName, user_id, category_id, state_id) values ('Item1', 1, 1, 1);
+
+insert into comments(comment, item_id) values ('comment1', 1);
+
+insert into attachs(attach, item_id) values ('attach', 1);
