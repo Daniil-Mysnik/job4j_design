@@ -1,0 +1,51 @@
+create database vehicleStore;
+
+create table body (
+    id serial primary key,
+    serialNumber int not null
+);
+
+create table engine (
+    id serial primary key,
+    brand varchar(255) not null,
+    horsepower int not null
+);
+
+create table gearbox (
+    id serial primary key,
+    numberOfGears int not null
+);
+
+create table car (
+    id serial primary key,
+    brand varchar(255) not null,
+    body_id int references body(id),
+    engine_id int references engine(id),
+    gearbox_id int references gearbox(id)
+);
+
+insert into body(serialNumber) values ('111111');
+insert into body(serialNumber) values ('222222');
+insert into body(serialNumber) values ('333333');
+insert into body(serialNumber) values ('444444');
+insert into body(serialNumber) values ('555555');
+
+insert into engine(brand, horsepower) values ('AMG', 350);
+insert into engine(brand, horsepower) values ('Volvo', 250);
+insert into engine(brand, horsepower) values ('M-power', 380);
+insert into engine(brand, horsepower) values ('1jz', 550);
+
+insert into gearbox(numberOfGears) values (3);
+insert into gearbox(numberOfGears) values (4);
+insert into gearbox(numberOfGears) values (5);
+insert into gearbox(numberOfGears) values (6);
+
+insert into car(brand, body_id, engine_id, gearbox_id) values ('Mercedes', 1, 1, 2);
+insert into car(brand, body_id, engine_id, gearbox_id) values ('Volvo', 2, 2, 1);
+insert into car(brand, body_id, engine_id, gearbox_id) values ('BMW', 3, 3, 3);
+
+--1
+select * from car join body on car.body_id = body.id join engine on car.engine_id = engine.id join gearbox on car.gearbox_id = gearbox.id;
+
+--2
+select * from car full join body on car.body_id = body.id full join engine on car.engine_id = engine.id full join gearbox on car.gearbox_id = gearbox.id where car.id is null;
