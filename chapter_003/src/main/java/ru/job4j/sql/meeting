@@ -1,0 +1,62 @@
+drop database meeting;
+
+create database meeting;
+
+create table meeting(
+   id serial primary key,
+   name varchar(255) not null
+);
+
+CREATE TYPE status AS ENUM ('ACCEPTED', 'REFUSED');
+
+create table "user"(
+   id serial primary key,
+   name varchar(255) not null,
+   user_status status not null
+);
+
+create table user_meeting(
+   meeting_id int references meeting(id),
+   user_id int references "user"(id)
+);
+
+insert into meeting (name)
+values ('meeting1');
+
+insert into meeting (name)
+values ('meeting2');
+
+insert into meeting (name)
+values ('meeting3');
+
+insert into meeting (name)
+values ('meeting4');
+
+insert into "user" (name, user_status)
+values ('user1', 'ACCEPTED');
+
+insert into "user" (name, user_status)
+values ('user2', 'REFUSED');
+
+insert into "user" (name, user_status)
+values ('user3', 'ACCEPTED');
+
+insert into user_meeting (meeting_id, user_id)
+values (1, 1);
+
+insert into user_meeting (meeting_id, user_id)
+values (2, 2);
+
+insert into user_meeting (meeting_id, user_id)
+values (3, 3);
+
+--Запрос, который получит список всех заяков и количество подтвердивших участников.
+select meeting.name, coalesce(accepted, 0) from meeting
+    left join (select meeting.id, meeting.name, count(user_status) as accepted from meeting
+        join user_meeting on meeting.id = user_meeting.meeting_id
+        join "user" on user_meeting.user_id = "user".id
+        where user_status = 'ACCEPTED'
+        group by meeting.id) as acpt on meeting.id = acpt.id;
+
+--Получить все совещания, где не было ни одной заявки на посещения
+select name from meeting left join user_meeting on meeting.id = user_meeting.meeting_id where meeting_id is null;
