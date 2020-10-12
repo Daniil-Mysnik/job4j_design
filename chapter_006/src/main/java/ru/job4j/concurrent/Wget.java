@@ -11,7 +11,7 @@ public class Wget {
                         }
                         System.out.print("\rFinished");
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        Thread.currentThread().interrupt();
                     }
                 }
         );
