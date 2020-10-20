@@ -32,14 +32,10 @@ public class SimpleBlockingQueue<T> {
         }
     }
 
-    public T poll() {
+    public T poll() throws InterruptedException {
         synchronized (this) {
             while (queue.isEmpty()) {
-                try {
-                    wait();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                wait();
             }
             notify();
             return queue.poll();
@@ -61,10 +57,14 @@ public class SimpleBlockingQueue<T> {
         Thread thread2 = new Thread(
                 () -> {
                     sbq.offer(30);
-                    sbq.poll();
-                    sbq.poll();
-                    sbq.poll();
-                    sbq.poll();
+                    try {
+                        sbq.poll();
+                        sbq.poll();
+                        sbq.poll();
+                        sbq.poll();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     sbq.offer(40);
                     sbq.getQueue();
                 }
