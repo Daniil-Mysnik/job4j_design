@@ -35,11 +35,17 @@ public class SimpleBlockingQueue<T> {
     public T poll() throws InterruptedException {
         synchronized (this) {
             while (queue.isEmpty()) {
-                wait();
+                if (!Thread.interrupted()) {
+                    wait();
+                }
             }
             notify();
             return queue.poll();
         }
+    }
+
+    public boolean isEmpty() {
+        return queue.isEmpty();
     }
 
     public void getQueue() {
